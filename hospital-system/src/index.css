@@ -1,0 +1,457 @@
+:root {
+  --bg: #F2F5F4;
+  --p: #fff;
+  --ink: #15292C;
+  --mu: #5B7073;
+  --ln: #D3DFDD;
+  --ac: #0D7377;
+  --ai: #fff;
+  --bad: #B8431F;
+  --ok: #2E7D4F;
+  --wn: #9A6200;
+  --sd: #0F2F33;
+  color-scheme: light
+}
+
+@media(prefers-color-scheme:dark) {
+  :root {
+    --bg: #0E1A1C;
+    --p: #152427;
+    --ink: #E4EEEC;
+    --mu: #8FA7A9;
+    --ln: #26393C;
+    --ac: #3FB8B2;
+    --ai: #06201f;
+    --bad: #EE8B6B;
+    --ok: #6CC58D;
+    --wn: #E3B04B;
+    --sd: #0A1415;
+    color-scheme: dark
+  }
+}
+
+* {
+  box-sizing: border-box
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0
+}
+
+body {
+  font: 14px/1.5 "IBM Plex Sans", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink)
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  background: var(--p);
+  border: 1px solid var(--ln);
+  border-radius: 6px;
+  padding: 7px 9px;
+  width: 100%
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--ln);
+  background: var(--p);
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 6px 11px
+}
+
+button.pri {
+  background: var(--ac);
+  color: var(--ai);
+  border-color: var(--ac)
+}
+button.pri:hover {
+  background: var(--az);
+  color: var(--ab);
+  border-color: var(--ac)
+}
+
+button.bt1{
+  background: var(--ok);
+  color: var(--ai);
+  border-color: var(--ok)
+}
+button.bt1:hover {
+  background: var(--az);
+  color: var(--ab);
+  border-color: var(--ac)
+}
+
+button.dg {
+  color: var(--bad)
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: default
+}
+
+:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: 2px
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--mu);
+  font-size: 13px
+}
+
+h1 {
+  font-size: 24px;
+  margin: 0
+}
+
+h2 {
+  margin: 0 0 12px
+}
+
+h3 {
+  margin: 20px 0 8px
+}
+
+.mu {
+  color: var(--mu)
+}
+
+/* Login */
+.lg {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  height: 100%
+}
+
+.lgl {
+  background: var(--sd);
+  color: #fff;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px
+}
+
+.lgl h1 {
+  font-size: 66px;
+  line-height: 1.15;
+  max-width: 11em
+}
+
+
+.lgl p {
+  color: #9FC4C1;
+  max-width: 24em;
+  margin: 0
+}
+
+.ecg {
+  width: 100%;
+  max-width: 520px;
+  margin-top: 20px
+}
+
+.ecg path {
+  fill: none;
+  stroke: #7CF0D8;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: dr 2.4s ease infinite
+}
+
+@keyframes dr {
+  to {
+    stroke-dashoffset: 0
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .ecg path {
+    animation: none;
+    stroke-dashoffset: 0
+  }
+}
+
+.lg form {
+  align-self: center;
+  justify-self: center;
+  width: min(540px, 86%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px
+}
+.lg h2{
+  font-size: 40px;
+  
+}
+.lg label{
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.err {
+  color: var(--bad);
+  margin: 0 0 10px
+}
+
+.hint {
+  color: var(--mu);
+  font-size: 12px;
+  margin: 0
+}
+
+/* App shell */
+.app {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  height: 100%
+}
+
+nav {
+  background: var(--sd);
+  color: #CFE3E1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 10px;
+  overflow: auto;
+  gap: 2px
+}
+
+nav b {
+  font-size: 20px;
+  color: #fff;
+  padding: 0 10px
+}
+
+nav small {
+  padding: 0 10px 14px;
+  color: #8FB0AE
+}
+
+nav a {
+  color: inherit;
+  text-decoration: none;
+  padding: 7px 10px;
+  border-radius: 6px;
+  white-space: nowrap
+}
+
+nav a:hover {
+  background: #ffffff14
+}
+
+nav a.cur {
+  background: var(--ac);
+  color: var(--ai)
+}
+
+main {
+  overflow: auto;
+  padding: 22px 28px;
+  min-width: 0
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px
+}
+
+.tools,
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap
+}
+
+.tools input {
+  width: 220px
+}
+
+/* Tables */
+.tw {
+  overflow-x: auto;
+  background: var(--p);
+  border: 1px solid var(--ln);
+  border-radius: 8px
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%
+}
+
+th,
+td {
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--ln);
+  vertical-align: top
+}
+
+th {
+  color: var(--mu);
+  font-weight: 500;
+  font-size: 13px
+}
+
+tr:last-child td {
+  border-bottom: 0
+}
+
+.ac {
+  white-space: nowrap;
+  text-align: right
+}
+
+.ac button {
+  margin-left: 4px;
+  padding: 3px 8px;
+  font-size: 13px
+}
+
+.empty {
+  padding: 28px;
+  text-align: center;
+  color: var(--mu)
+}
+
+/* Dashboard readouts */
+.mon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  background: #0A1E21;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 6px 0 8px
+}
+
+.mon a {
+  background: #0F2F33;
+  color: #9FD6D2;
+  padding: 14px 16px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column
+}
+
+.mon b {
+  font: 500 30px/1.25 ui-monospace, Menlo, Consolas, monospace;
+  color: #7CF0D8;
+  font-variant-numeric: tabular-nums
+}
+
+/* Dialogs and forms */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 20, 22, .55);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  z-index: 5
+}
+
+.box {
+  background: var(--p);
+  border-radius: 12px;
+  padding: 22px;
+  width: min(640px, 100%);
+  max-height: 92%;
+  overflow: auto
+}
+
+.fg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px
+}
+
+@media(max-width:760px) {
+
+  .lg,
+  .fg {
+    grid-template-columns: 1fr
+  }
+
+  .lgl {
+    padding: 24px
+  }
+
+  .app {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr)
+  }
+
+  nav {
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    padding: 8px
+  }
+
+  nav small {
+    display: none
+  }
+
+  main {
+    padding: 14px
+  }
+}
+
+/* ===== Status badges ===== */
+.b{padding:1px 8px;border-radius:99px;font-size:12px;border:1px solid currentColor;white-space:nowrap}
+.s-Completed,.s-Approved,.s-Paid,.s-Present{color:var(--ok)}
+.s-Cancelled,.s-Rejected,.s-Unpaid,.s-Absent{color:var(--bad)}
+.s-Scheduled,.s-Requested,.s-Pending,.s-Partial{color:var(--wn)}
+.s-Checkedin,.s-Admitted,.s-Samplecollected{color:var(--ac)}
+.s-Discharged{color:var(--mu)}
+
+/* ===== Wide form fields (text areas) ===== */
+.wide{grid-column:1/-1}
+
+/* ===== Weekly calendar ===== */
+.cal-head{margin-bottom:12px}
+.grid7{display:grid;grid-template-columns:repeat(7,minmax(130px,1fr));gap:8px;overflow-x:auto}
+.day{background:var(--p);border:1px solid var(--ln);border-radius:8px;padding:8px;min-height:120px}
+.day.now{border:2px solid var(--ac)}
+.day h4{margin:0 0 4px}
+.ev{display:flex;flex-direction:column;align-items:flex-start;width:100%;text-align:left;margin:5px 0;padding:3px 6px;border:0;border-left:3px solid var(--ac);border-radius:0;background:var(--bg)}
+.ev small{color:var(--mu)}
+
+/* ===== Lists inside pages and dialogs ===== */
+main ul,.box ul{margin:0;padding-left:18px}
+main li,.box li{margin-bottom:6px}
+
+/* ===== Printing (lab report, invoice): show only the open dialog ===== */
+@media print{
+  body *{visibility:hidden}
+  .box,.box *,.report,.report *{visibility:visible}
+  .overlay{position:absolute;inset:auto;left:0;top:0;background:none;padding:0;display:block}
+  .box{width:100%;max-height:none;overflow:visible}
+  .report{position:absolute;left:0;top:0;width:100%}
+  .np{display:none!important}
+}
