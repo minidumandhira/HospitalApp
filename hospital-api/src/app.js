@@ -1,7 +1,11 @@
+
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import { WEB_ORIGIN } from './config.js'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import { WEB_ORIGIN, IS_PRODUCTION } from './config.js'
 import authRouter from './routes/auth.js'
 import usersRouter from './routes/users.js'
 import actionsRouter from './routes/actions.js'
@@ -15,37 +19,94 @@ import bootstrapRouter from './routes/bootstrap.js'
 import resourcesRouter from './routes/resources.js'
 import { Problem } from './errors.js'
 
-// Builds the web application. server.js starts it; the tests start their own copy.
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const frontendPath = path.resolve(
+  __dirname,
+  '../../hospital-system/dist'
+)
+
 export function createApp() {
   const app = express()
+
   app.disable('x-powered-by')
-  app.use(cors({ origin: WEB_ORIGIN, credentials: true })) // only the React app may call this API
+
+  // Render runs behind a proxy.
+  if (IS_PRODUCTION) {
+    app.set('trust proxy', 1)
+  }
+
+ const allowedOrigins = [
+  WEB_ORIGIN,
+  'http://localhost:5173',
+  'http://127.0.0.1:5173'
+]
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}))
+
   app.use(express.json({ limit: '100kb' }))
   app.use(cookieParser())
 
-  app.get('/', (req, res) => res.send('Hospital API is running. Try /api/health'))
-  app.get('/api/health', (req, res) => res.json({ ok: true }))
+  // Prevent caching private API responses.
+  app.use('/api', (req, res, next) => {
+    res.set('Cache-Control', 'no-store')
+    next()
+  })
 
+  app.get('/api/health', (req, res) => {
+    res.json({ ok: true })
+  })
+
+  // Existing API routes.
   app.use('/api/auth', authRouter)
   app.use('/api/users', usersRouter)
   app.use('/api', actionsRouter)
-  app.use('/api', pharmacyRouter)    // the prescription queue and dispensing
-  app.use('/api', billingRouter)     // invoices and payments
-  app.use('/api', portalRouter)      // a patient's own appointments
-  app.use('/api', historyRouter)     // medical history
-  app.use('/api', reportsRouter)     // reports and the dashboard numbers
-  app.use('/api', adminRouter)       // the audit log and backups
-  app.use('/api', bootstrapRouter)   // everything this role may see, in one request
-  app.use('/api', resourcesRouter)   // patients, appointments, lab, pharmacy ... (see resources.js)
+  app.use('/api', pharmacyRouter)
+  app.use('/api', billingRouter)
+  app.use('/api', portalRouter)
+  app.use('/api', historyRouter)
+  app.use('/api', reportsRouter)
+  app.use('/api', adminRouter)
+  app.use('/api', bootstrapRouter)
+  app.use('/api', resourcesRouter)
 
-  app.use('/api', (req, res) => res.status(404).json({ error: 'Not found.' }))
+  // API 404 handler.
+  app.use('/api', (req, res) => {
+    res.status(404).json({ error: 'Not found.' })
+  })
 
-  // Any error ends up here. Details go to the server log, never to the user.
+  // Serve React production build.
+  app.use(express.static(frontendPath))
+
+  // React Router fallback.
+  app.get(/.*/, (req, res, next) => {
+    res.sendFile(
+      path.join(frontendPath, 'index.html'),
+      (err) => {
+        if (err) next(err)
+      }
+    )
+  })
+
+  // Existing error handler.
   app.use((err, req, res, next) => {
-    if (err instanceof Problem) return res.status(err.status).json({ error: err.message }) // a clear, planned answer
+    if (err instanceof Problem) {
+      return res.status(err.status).json({ error: err.message })
+    }
+
     const status = err.status && err.status < 500 ? err.status : 500
+
     if (status === 500) console.error(err)
-    res.status(status).json({ error: status === 500 ? 'Something went wrong on the server.' : 'The request could not be read.' })
+
+    res.status(status).json({
+      error: status === 500
+        ? 'Something went wrong on the server.'
+        : 'The request could not be read.'
+    })
   })
 
   return app

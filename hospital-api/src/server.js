@@ -14,4 +14,6 @@ const backupToday = () => ensureDailyBackup().then((b) => b && console.log('Dail
 backupToday()
 setInterval(backupToday, 60 * 60 * 1000).unref()
 
-createApp().listen(PORT, () => console.log(`Hospital API running at http://localhost:${PORT}`))
+createApp().listen(PORT, '0.0.0.0', () => {
+  console.log(`Hospital server running on port ${PORT}`)
+})
